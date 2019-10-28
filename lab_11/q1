@@ -1,0 +1,69 @@
+#include<bits/stdc++.h>
+#include<vector>
+using namespace std;
+void addedge(vector<int> adj[] ,int u,int v)
+{
+	adj[u].push_back(v);
+	adj[v].push_back(u);
+}
+
+bool is_bipartite(vector<int> adj[],int v,vector<bool>& visited,vector<int>& color)
+{
+	for(int u : adj[v] )
+	{
+		if(visited[u]== false)
+		{
+			visited[u]=true;
+			color[u]= !color[v];
+			if (!is_bipartite(adj,u,visited,color))
+				return false;
+		}
+		else if (color[u]==color[v])
+			return false;
+	}
+	return true;
+}
+
+int main()
+{
+	int N;
+	cin>>N;
+	vector<int> adj[N+1];
+	vector<bool> visited(N+1);
+	vector<int> color(N+1);
+	int M;
+	cin>>M;
+	int n1,n2;
+	for(int i=0;i<M;i++)
+	{
+		cin>>n1>>n2;
+		addedge(adj,n1,n2);
+	}
+
+	visited[1]= true ;
+	color[1]= 0 ;
+	int count=0;
+	for(int z=0;z<N;z++)
+	{
+		if(is_bipartite(adj,z,visited,color))
+		{
+			continue;
+		}	
+		else
+		{
+
+		cout<<"NO"<<endl;
+			count=1;
+			break;
+		}
+	}
+	if(count==0)
+	{
+		cout<<"YES";
+	}
+	
+
+	
+
+	return 0;
+}
